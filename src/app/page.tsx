@@ -1,16 +1,18 @@
-import { createServerComponentClient} from '@supabase/auth-helpers-nextjs'
-import {cookies} from 'next/headers'
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import AuthButtonServer from "./auth-button-server";
 
-export default function Home() {
-  const supabase = createServerComponentClient({cookies})
-  const {data} = await supabase.from('posts')
+export default async function Home() {
+  const supabase = createServerComponentClient({ cookies });
+  const { data: posts } = await supabase.from("posts").select();
 
+  const handleSignIn = () => {
+    console.log("clicked");
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hola devTTers!crypto worth at least 10 USDT
-      <pre>
-        JSON.stringify()
-      </pre>
-    </main>
+    <>
+      <AuthButtonServer />
+      <pre>{JSON.stringify(posts, null, 2)}</pre>
+    </>
   );
 }
